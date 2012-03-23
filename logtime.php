@@ -9,10 +9,11 @@
  * -h Hours spent
  * -a Activity Id
  * -c Comments
+ * -v verbose - displays confirmations and error messages
  * 
  * Examples: To log time against an issue, run the command like the following;
  *
- * logtime.php -i {issue_number} -
+ * logtime.php -i {issue_number} -h .5
  **/
 
 require_once ('phpactiveresource/ActiveResource.php');
