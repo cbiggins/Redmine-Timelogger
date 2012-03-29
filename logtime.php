@@ -1,3 +1,4 @@
+#! /usr/bin/php
 <?php
 /**
  * Simple, small command line script for logging time in redmine 
@@ -15,11 +16,28 @@
  *
  * logtime.php -i {issue_number} -h .5
  **/
-
 require_once ('phpactiveresource/ActiveResource.php');
 
+$activity_ids = array(
+                'daily scrum'               => 39,
+                'development'               => 9,
+                'project management'        => 14,
+                'new business/non billable' => 38,
+                'new business'              => 38,
+                'non billable'              => 38,
+                'consulting'                => 18,
+                'visual design'             => 8,
+                'documentation'             => 19,
+                'information architecture'  => 13,
+                'reviewing'                 => 17,
+                'internal communications'   => 20,
+                'client communications'     => 16,
+                'training'                  => 15,
+                'bug investigation'         => 31,
+                'qa'                        => 32,);
+
 class Time_Entry extends ActiveResource {
-  var $site = 'https://redmine.previousnext.com.au/';
+  var $site = '';
   var $user = '';
   var $password = '';
   var $request_format = 'xml'; // REQUIRED!
@@ -32,18 +50,28 @@ if (empty($options['h']) || empty($options['i'])) {
   exit;
 }
 
+if (empty($options['a'])) {
+  $options['a'] = $activity_ids['development'];
+}
+else {
+  $options['a'] = $activity_ids[strtolower($options['a'])];
+}
+
 $new_entry = array(
              'issue_id'     => $options['i'],
              'spent_on'     => (!empty($options['d']) ? $options['d'] : date('Y-m-d')),
              'hours'        => $options['h'],
-             'activity_id'  => (!empty($options['a']) ? $options['a'] : 'Development'),
+             'activity_id'  => (string)$options['a'],
              'comments'     => (!empty($options['c']) ? $options['c'] : null)
              );
 
 $time_entry = new Time_Entry($new_entry);
 $time_entry->save();
 
-if (empty($time_entry->id)) {
+$tmp_id = $time_entry->id;
+$success = !empty($tmp_id);
+
+if (!$success) {
   if (!isset($options['v'])) {
     print 'There was an error. Run with -v to see output' . PHP_EOL;
   }

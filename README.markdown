@@ -18,7 +18,9 @@ Now we need to get PHP ActiveResource...
 `git submodule update`
 
 
-Then just add the username / password for your Redmine install in lines 23 & 24.
+Then just add the username / password / Redmine URL for your Redmine install in lines 40, 41, 42.
+
+Also, the 'activities' array is specific to our installation, you can update these to be yours as they will not correspond correctly with your id/name maps.
 
 Voila! You're ready to go!
 
