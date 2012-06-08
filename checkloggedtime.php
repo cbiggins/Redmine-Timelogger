@@ -16,7 +16,7 @@ $full_day = 8; // How many hours makes up 100% utilisation?
 $today = strftime("%Y-%m-%d"); // Todays date in Redmines date format
 
 class Time_Entry extends ActiveResource {
-  var $site = ''; // URL to Redmine
+  var $site = ''; // URL to Redmine - WITH trailing slash and https (if requd)
   var $user = ''; // Redmine username
   var $password = ''; // Redmine pass
   var $request_format = 'xml'; // REQUIRED!
