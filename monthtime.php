@@ -1,13 +1,9 @@
 #! /usr/bin/php
 <?php
-ini_set('display_errors', 1);
-require_once ('phpactiveresource/ActiveResource.php');
 
-class Time_Entry extends ActiveResource {
-  var $site = ''; // URL to Redmine - WITH trailing slash and https (if requd)
-  var $user = ''; // Redmine username
-  var $password = ''; // Redmine pass
-  var $request_format = 'xml'; // REQUIRED!
+require_once('redmine.activeresource.class.php');
+
+class Time_Entry extends RedmineActiveResource {
   var $element_name = 'time_entries';
 }
 
@@ -32,7 +28,7 @@ print 'Time spent for the month: ' . $month_total['spent'] . PHP_EOL;
 
 function get_entries($time_array = array(), $offset = FALSE) {
 
-  $me = ''; // Your full name as it appears in Redmine
+  $me = REDMINE_FULLNAME; // Your full name as it appears in Redmine
   $full_day = 8; // How many hours makes up 100% utilisation?
   $from = strftime("%Y-%m-01");
 

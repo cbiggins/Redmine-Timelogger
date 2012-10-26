@@ -16,7 +16,7 @@
  *
  * logtime.php -i {issue_number} -h .5
  **/
-require_once ('phpactiveresource/ActiveResource.php');
+require_once('redmine.activeresource.class.php');
 
 $activity_ids = array(
                 'daily scrum'               => 39,
@@ -36,12 +36,7 @@ $activity_ids = array(
                 'bug investigation'         => 31,
                 'qa'                        => 32,);
 
-class Time_Entry extends ActiveResource {
-  var $site = '';
-  var $user = '';
-  var $password = '';
-  var $request_format = 'xml'; // REQUIRED!
-}
+class Time_Entry extends RedmineActiveResource {}
 
 $options = getopt('i:d:h:a:c:v');
 
