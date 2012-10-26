@@ -1,6 +1,6 @@
 #! /usr/bin/php
 <?php
-
+ini_set('display_errors', 1);
 require_once ('phpactiveresource/ActiveResource.php');
 
 // Install using Pear; sudo pear install Net_Growl
@@ -10,10 +10,16 @@ require_once ('Net/Growl/Autoload.php');
  * REDMINE Section
  */
 
-$me = ''; // Your full name as it appears in Redmine
-$growl_pass = ''; // Your Growl server password, see README 
+$me = 'Christian Biggins'; // Your full name as it appears in Redmine
+$growl_pass = 'pass'; // Your Growl server password, see README 
 $full_day = 8; // How many hours makes up 100% utilisation?
-$today = strftime("%Y-%m-%d"); // Todays date in Redmines date format
+
+if (!empty($argv[1])) {
+  $today = strftime("%Y-%m-%d"); // Todays date in Redmines date format
+}
+else {
+  $today = $argv[1];
+}
 
 class Time_Entry extends ActiveResource {
   var $site = ''; // URL to Redmine - WITH trailing slash and https (if requd)
@@ -33,15 +39,17 @@ $time_logged = 0;
 // Loop over each entry. We can't limit the API call to a particular user, so we need to compare it with the $me var
 foreach ($times as $k => $time) {
 
-  $user = $time->_data['user']; 
-  $name_attr = 'name';
+  if (!empty($time->_data['user'])) {
+    $user = $time->_data['user'];
+    $name_attr = 'name';
 
-  // Get the user that logged this time entry
-  $time_user = (string)$user->attributes()->$name_attr;
+    // Get the user that logged this time entry
+    $time_user = (string)$user->attributes()->$name_attr;
 
-  // If the user is $me, add the logged hours to our total
-  if ($time_user == $me) {
-    $time_logged += $time->_data['hours']; 
+    // If the user is $me, add the logged hours to our total
+    if ($time_user == $me) {
+      $time_logged += $time->_data['hours']; 
+    }
   }
 }
 

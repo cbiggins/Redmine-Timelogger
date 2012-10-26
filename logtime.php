@@ -1,7 +1,7 @@
 #! /usr/bin/php
 <?php
 /**
- * Simple, small command line script for logging time in redmine 
+ * Simple, small command line script for logging time in redmine
  *
  * Arguments:
  *
@@ -11,7 +11,7 @@
  * -a Activity Id
  * -c Comments
  * -v verbose - displays confirmations and error messages
- * 
+ *
  * Examples: To log time against an issue, run the command like the following;
  *
  * logtime.php -i {issue_number} -h .5
@@ -44,6 +44,10 @@ class Time_Entry extends ActiveResource {
 }
 
 $options = getopt('i:d:h:a:c:v');
+
+if (empty($options)) {
+  var_dump($activity_ids);
+  }
 
 if (empty($options['h']) || empty($options['i'])) {
   print 'Minimum options are -i <issue number> and -h <hours>' . PHP_EOL;
@@ -82,6 +86,6 @@ if (!$success) {
 }
 else {
   if (isset($options['v'])) {
-    print 'Time entry added: id ' . $time_entry->id . PHP_EOL;  
+    print 'Time entry added: id ' . $time_entry->id . PHP_EOL;
   }
 }
